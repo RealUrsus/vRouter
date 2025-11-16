@@ -19,7 +19,7 @@ Gratuitous ARP (GARP) is an unsolicited ARP packet where:
 ## Requirements
 
 ```bash
-pip install psutil
+apt install python3-psutil
 ```
 
 Python 3.x required.
@@ -70,27 +70,6 @@ Interface: eth0, MAC Address: aa:bb:cc:dd:ee:ff
 - Can be used for ARP spoofing attacks - **use responsibly**
 - Only use on networks you own or have permission to test
 - May trigger IDS/IPS alerts
-
-## Implementation Notes
-
-**✅ Consolidated Function Design (garp.py:3-38)**
-- Single `send_garp()` function handles both ARP request and reply
-- Uses `operation` parameter: 1 = ARP request, 2 = ARP reply
-- Optional `target_ip` parameter for broadcast ARP replies
-- Consistent `struct.pack` formatting throughout
-
-**✅ Broadcast Address Safety (garp.py:65-66)**
-- Validates `broadcast is not None` before sending ARP reply
-- Prevents crash when `address.broadcast` is None for:
-  - Point-to-point interfaces (no broadcast domain)
-  - /32 netmask interfaces
-  - Interfaces without broadcast configured
-- Always sends ARP request, conditionally sends ARP reply
-
-**Note on Error Handling**
-- Socket operations require root privileges
-- For production use in virtual router: print statements can be removed
-- Optional try/except can be added during development for debugging
 
 ## Limitations
 
